@@ -8,8 +8,8 @@ import { BookService } from '../book.service'
   styleUrls: ['./books.component.css']
 })
 export class BooksComponent implements OnInit {
-  books: Book[]
-  searchString = "";
+  public books;
+  //searchString = "";
   constructor (private bookService: BookService) {}
 
   onClickImage(book) {
@@ -17,17 +17,24 @@ export class BooksComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBooks();
+    this.retrieveBooks();
   }
 
-  onSubmit() {
-    this.getBooks()
+ // onSubmit() {
+//   this.retrieveBooks()
+ // }
+
+ retrieveBooks() {
+    this.bookService.getall()
+      .subscribe(
+        data => {
+          this.books =data
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        });
   }
 
-  private getBooks() {
-    this.bookService.getBooks(this.searchString).then(data => {
-      this.books = data;
-    })
-  }
 
 }

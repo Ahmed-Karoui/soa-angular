@@ -6,32 +6,31 @@ import { HttpClient } from '@angular/common/http'
   providedIn: 'root'
 })
 export class BookService {
-  apiRoot = "https://www.googleapis.com/books/v1/volumes"
+  apiRoot = "http://localhost:8080/Project_aos/Rest/Book/getall"
 
   constructor(private http: HttpClient) { }
 
-  getBooks(author: string) : Promise<Book[]> {
-    return new Promise((resolve, reject) => {
-      let apiURL = `${this.apiRoot}?q=inauthor:"${author}"&langRestrict=en`;
-      this.http.get(apiURL).toPromise().then((data: any) => {
-        let results : Book[] = data.items.map(item => {
-          return new Book(
-            this.getSafe(() => item.volumeInfo.title),
-            this.getSafe(() => item.volumeInfo.authors),
-            this.getSafe(() => item.volumeInfo.imageLinks.thumbnail)
-          )
-        })
-        resolve(results);
-      });
-    });
+  public getall() {
+    return this.http.get(this.apiRoot);
   }
 
-  private getSafe<T> (f: () => T) : T {
-    try {
-      return f();
-    } catch (error) {
-      return undefined;
-    }
+  getBook(id) {
+    return this.http.get(`${this.apiRoot}/${id}`);
   }
 
+  addBook(data) {
+    return this.http.post(this.apiRoot, data);
+  }
+
+  updateBook(id, data) {
+    return this.http.put(`${this.apiRoot}/${id}`, data);
+  }
+
+  deleteBook(id) {
+    return this.http.delete(`${this.apiRoot}/${id}`);
+  }
+
+  findByTitle(title) {
+    return this.http.get(`${this.apiRoot}?title=${title}`);
+  }
 }

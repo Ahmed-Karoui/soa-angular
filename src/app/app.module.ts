@@ -18,7 +18,7 @@ import { BooksComponent } from './books/books.component';
     FormsModule,
     HttpClientModule,
     MatCardModule,
-    MatGridListModule
+    MatGridListModule,
   ],
   providers: [BookService],
   bootstrap: [AppComponent]
